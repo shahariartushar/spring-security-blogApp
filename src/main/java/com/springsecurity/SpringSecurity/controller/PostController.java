@@ -5,11 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.springsecurity.SpringSecurity.payload.PostDTO;
 import com.springsecurity.SpringSecurity.service.PostService;
@@ -38,6 +34,25 @@ public class PostController {
 	public List<PostDTO> getAllPosts(){
 		
 		return postService.getAllPosts();
+	}
+
+	// Get a blog post by id
+	@GetMapping("/{id}")
+	public ResponseEntity<PostDTO> getPostById(@PathVariable String id){
+		return new ResponseEntity<>(postService.getPostById(id), HttpStatus.OK);
+		//return ResponseEntity.ok(postService.getPostById(id));
+	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity<PostDTO> updatePost(@RequestBody PostDTO postDTO, @PathVariable String id){
+		return new ResponseEntity<>(postService.updatePost(postDTO, id), HttpStatus.OK);
+		//return ResponseEntity.ok(postService.updatePost(postDTO, id));
+	}
+	@DeleteMapping("/{id}")
+	public ResponseEntity<String> deletePost(@PathVariable String id){
+		postService.deletePost(id);
+
+		return new ResponseEntity<>("Post has been deleted with id: " + id, HttpStatus.OK);
 	}
 	
 	
