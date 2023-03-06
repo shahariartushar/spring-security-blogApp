@@ -7,7 +7,7 @@ import com.springsecurity.SpringSecurity.payload.PostResponse;
 
 public interface PostService {
 	PostDTO createPost(PostDTO postDTO);
-	PostResponse getAllPosts(int pageNo, int pageSize);
+	PostResponse getAllPosts(int pageNo, int pageSize, String sort, String sortOdr);
 	PostDTO getPostById(String id);
 	PostDTO updatePost(PostDTO postDTO, String id);
 

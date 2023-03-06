@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.springsecurity.SpringSecurity.Mapper.PostMapper;
@@ -44,9 +45,11 @@ public class PostServiceImpl implements PostService{
 	}
 
 	@Override
-	public PostResponse getAllPosts(int pageNo, int pageSize) {
+	public PostResponse getAllPosts(int pageNo, int pageSize, String sort, String sortOdr) {
 
-		Pageable pageable = PageRequest.of(pageNo, pageSize);
+		Sort sortOrder = sortOdr.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sort).ascending() : Sort.by(sort).descending();
+
+		Pageable pageable = PageRequest.of(pageNo, pageSize, sortOrder);
 
 		Page<Post> posts = postRepository.findAll(pageable);
 

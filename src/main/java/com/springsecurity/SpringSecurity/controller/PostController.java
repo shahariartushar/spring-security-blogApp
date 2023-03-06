@@ -34,10 +34,12 @@ public class PostController {
 	@GetMapping
 	public PostResponse getAllPosts(
 			@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-			@RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize
+			@RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize,
+			@RequestParam(value = "sortBy", defaultValue = "id", required = false) String sort,
+			@RequestParam(value = "sortOdr", defaultValue = "asc", required = false) String sortOdr
 	){
 		
-		return postService.getAllPosts(pageNo, pageSize);
+		return postService.getAllPosts(pageNo, pageSize, sort, sortOdr);
 	}
 
 	// Get a blog post by id
