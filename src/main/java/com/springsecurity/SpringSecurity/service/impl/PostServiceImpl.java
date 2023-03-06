@@ -4,7 +4,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.springsecurity.SpringSecurity.exception.ResourceNotFoundException;
+import com.springsecurity.SpringSecurity.payload.PostResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.springsecurity.SpringSecurity.Mapper.PostMapper;
@@ -40,10 +44,26 @@ public class PostServiceImpl implements PostService{
 	}
 
 	@Override
-	public java.util.List<PostDTO> getAllPosts() {
-		List<Post> posts = postRepository.findAll();
+	public PostResponse getAllPosts(int pageNo, int pageSize) {
+
+		Pageable pageable = PageRequest.of(pageNo, pageSize);
+
+		Page<Post> posts = postRepository.findAll(pageable);
+
+		// Get content for page obj
+		List<Post> postList = posts.getContent();
 		
-		return posts.stream().map(post -> PostMapper.mapToDTO(post)).collect(Collectors.toList());
+		 List<PostDTO> content = postList.stream().map(post -> PostMapper.mapToDTO(post)).collect(Collectors.toList());
+		 PostResponse postResponse = new PostResponse();
+		 postResponse.setContent(content);
+		 postResponse.setPageNo(posts.getNumber());
+		 postResponse.setPageSize(posts.getSize());
+		 postResponse.setTotalPages(posts.getTotalPages());
+		 postResponse.setTotalElements(posts.getTotalElements());
+		 postResponse.setLast(posts.isLast());
+
+		 return postResponse;
+
 
 	}
 

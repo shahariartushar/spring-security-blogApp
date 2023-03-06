@@ -2,6 +2,7 @@ package com.springsecurity.SpringSecurity.controller;
 
 import java.util.List;
 
+import com.springsecurity.SpringSecurity.payload.PostResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,9 +32,12 @@ public class PostController {
 	
 	// Get all blog post
 	@GetMapping
-	public List<PostDTO> getAllPosts(){
+	public PostResponse getAllPosts(
+			@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+			@RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize
+	){
 		
-		return postService.getAllPosts();
+		return postService.getAllPosts(pageNo, pageSize);
 	}
 
 	// Get a blog post by id
